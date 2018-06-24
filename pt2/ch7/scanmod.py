@@ -38,3 +38,23 @@ def ScanMD5(fname):
     
     return ret, vname
 
+
+''' 악성코드 검색을 수행.
+args: vdb, vsize, sdb, fname
+returns: 악성코드가 있다면 리턴
+아니면 다른 함수의 결과대로.
+'''
+def ScanVirus(vdb, vsize, sdb, fname):
+    ret, vname = ScanMD5(vdb, vsize, fname)
+    if ret == True:
+        return ret, vname
+
+    fp = open(fname, 'rb')
+    for t in sdb:
+        if ScanStr(fp, t[0], t[1]) == True:
+            ret = True
+            vname = t[2]
+            break
+    fp.close()
+
+    return ret, vname

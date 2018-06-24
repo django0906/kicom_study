@@ -10,6 +10,7 @@ import curemod
 
 VirusDB = []    # virus.kmd파일에 이제 저장함.
 vdb = []        # 가공된 악성코드 DB
+sdb = []        # 가공된 악성코드 DB(특정 위치 검색용)
 vsize = []      # 악성코드의 파일 크기만
 
 
@@ -77,15 +78,24 @@ def MakeVirusDB():
     for pattern in VirusDB:
         t = []
         v = pattern.split(':')
-        t.append(v[1])
-        t.append(v[2])
-        vdb.append(t)   # 최종 vdb완성
+        
+        scan_func = v[0]
+        cure_func = v[1]
+        
+        if scan_func == 'ScanMD5':
+            t.append(v[3])
+            t.append(v[4])
+            vdb.append(t)
 
-        size = int(v[0])    # 악성코드 파일  크기
-        if vsize.count(size) == 0:  # 해당 크기가 등록되었는지 확인
-            vsize.append(size)
+            size = int(v[2])
+            if vsize.count(size) == 0:
+                vsize.append(size)
 
-
+        elif scan_func == 'ScanStr':
+            t.append(int(v[2]))
+            t.append(v[3])
+            t.append(v[4])
+            sdb.append(t)
 
 
 if __name__ == '__main__':
@@ -98,7 +108,7 @@ if __name__ == '__main__':
 
     fname = sys.argv[1]
 
-    ret, vname = ScanMD5(fname)
+    ret, vname = scanmod.ScanVirus(fname)
     if ret == True:
         print '%s: %s' % (fname, vname)
         curemod.CureDelete(fname)    # 파일 삭제!
