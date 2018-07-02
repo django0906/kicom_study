@@ -15,7 +15,7 @@ import time
 # -----
 def convert_date(t):
     y = ((t & 0xFE00) >> 9) + 1980
-    m = (t & 0x01E0) >> 5)
+    m = (t & 0x01E0) >> 5
     d = (t & 0x001F)
 
     # print '%04d-02d-02d' % (y, m, d)
