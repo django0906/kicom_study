@@ -49,7 +49,7 @@ class Engine:
             return False
 
         if self.debug:
-            print '[*] kicom.cmd :'
+            print '[*] kicom.kmd :'
             print ' ', self.kmdfiles
 
         for kmd_name in self.kmdfiles:
